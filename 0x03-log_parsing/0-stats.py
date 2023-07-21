@@ -1,42 +1,49 @@
 #!/usr/bin/python3
-"""a script that reads stdin line by line and computes metrics:
-Input format: <IP Address> - [<date>] "GET /projects/260 HTTP/1.1"
-status code> <file size> (if the format is not this one,
-the line must be skipped)"""
+"""
+Task: 0. Log Parsing
+File: 0x06-log_parsing/0-stats.py
+"""
+from sys import stdin
 
 
-import sys
+def printstats(file_size, status_codes):
+    """
+    This prints statistics at the beginning and every 10 lines
+    This will also be called on a Keyboard interruption
+    """
+    print("File size: " + str(file_size))
+    for code in sorted(status_codes.keys()):
+        if status_codes[code] > 0:
+            print(code + ": " + str(status_codes[code]))
 
 
-total_size = 0
-status_codes = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
+line_num = 0
+file_size = 0
+status_code = 0
+status_codes = {"200": 0, "301": 0, "400": 0, "401": 0,
+                "403": 0, "404": 0, "405": 0, "500": 0}
 
 try:
-    # Read input line by line
-    for i, line in enumerate(sys.stdin):
-        # Parse input format
-        try:
-            parts = line.split()
-            file_size = int(parts[8])
-            status_code = int(parts[10])
-        except Exception as e:
-            # Skip if input format isnt the right one
-            continue
+    for line in stdin:
+        line_num += 1
+        split_line = line.split()
 
-        # Update metrics
-        total_size += file_size
-        if status_code in status_codes:
+        if len(split_line) > 1:
+            file_size += int(split_line[-1])
+
+        if len(split_line) > 2 and split_line[-2].isnumeric():
+            status_code = split_line[-2]
+        else:
+            status_code = 0
+
+        if status_code in status_codes.keys():
             status_codes[status_code] += 1
 
-        # Print metrics every 10 lines or keyboard interruption
-        if (i + 1) % 10 == 0:
-            print(f"Total file size: {total_size}")
-            for code in sorted(status_codes):
-                print(f"{code}: {status_codes[code]}")
-            print()
+        if line_num % 10 == 0:
+            printstats(file_size, status_codes)
 
-except KeyboardInterrupt:
-    print(f"Total file size: {total_size}")
-    for code in sorted(status_codes):
-        if status_codes[code] > 0:
-            print(f"{code}: {status_codes[code]}")
+    printstats(file_size, status_codes)
+
+except (KeyboardInterrupt):
+    printstats(file_size, status_codes)
+    raise
