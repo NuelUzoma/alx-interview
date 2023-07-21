@@ -9,7 +9,7 @@ import sys
 
 
 total_size = 0
-status_codes = {}
+status_codes = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
 
 try:
     # Read input line by line
@@ -25,15 +25,18 @@ try:
 
         # Update metrics
         total_size += file_size
-        status_codes[status_code] = status_codes.get(status_code, 0) + 1
+        if status_code in status_codes:
+            status_codes[status_code] += 1
 
         # Print metrics every 10 lines or keyboard interruption
         if (i + 1) % 10 == 0:
             print(f"Total file size: {total_size}")
             for code in sorted(status_codes):
                 print(f"{code}: {status_codes[code]}")
+            print()
 
 except KeyboardInterrupt:
     print(f"Total file size: {total_size}")
     for code in sorted(status_codes):
-        print(f"{code}: {status_codes[code]}")
+        if status_codes[code] > 0:
+            print(f"{code}: {status_codes[code]}")
