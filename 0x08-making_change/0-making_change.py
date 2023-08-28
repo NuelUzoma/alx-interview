@@ -1,3 +1,8 @@
+#!/usr/bin/python3
+"""Given a pile of coins of different values,
+determine the fewest number of coins needed to meet a given amount total"""
+
+
 def makeChange(coins, total):
     # Create a table to store the minimum number of coins needed for each amount
     dp = [float('inf')] * (total + 1)
