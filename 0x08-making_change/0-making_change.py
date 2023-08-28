@@ -4,7 +4,7 @@ determine the fewest number of coins needed to meet a given amount total"""
 
 
 def makeChange(coins, total):
-    # Create a table to store the minimum number of coins needed for each amount
+    # Create a table to store the minimum number of coins
     dp = [float('inf')] * (total + 1)
     dp[0] = 0
 
