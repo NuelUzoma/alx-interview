@@ -2,7 +2,7 @@
 """
 0-main
 """
-island_perimeter = __import__('0-island_perimeter').island_perimeter
+island_perimeter = __import__('0-island_perimeter').solve
 
 if __name__ == "__main__":
     grid = [

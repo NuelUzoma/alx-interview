@@ -1,23 +1,31 @@
 #!/usr/bin/python3
-"""A function def island_perimeter(grid): that returns the
-perimeter of the island described in grid"""
+"""The island perimeter task"""
 
 
-def island_perimeter(grid):
-    """The function to get the perimeter of the island"""
-    rows = len(grid)
-    columns = len(grid[0])
+def solve(matrix):
+    d = 0
     perimeter = 0
+    height = len(matrix)
+    length = len(matrix[0])
+    for line in matrix:
+        c = 0
 
-    for i in range(rows):
-        for j in range(columns):
-            if grid[i][j] == 1:  # land cell
-                perimeter += 4  # each land cell has four slides
-
-                # adjacent cells check
-                if i > 0 and grid[i-1][j] == 1:  # upper cell
-                    perimeter -= 2  # subtract 2 sides (top and bottom)
-                if j > 0 and grid[j-1][i] == 1:  # lower cell
-                    perimeter -= 2  # subtract 2 sides (top and bottom)
-
+        for val in line:
+            if val == 1:
+                surround = 4
+                if c != length - 1:
+                    if matrix[d][c + 1] == 1:
+                        surround -= 1
+                if c != 0:
+                    if matrix[d][c - 1] == 1:
+                        surround -= 1
+                if d != height - 1:
+                    if matrix[d + 1][c] == 1:
+                        surround -= 1
+                if d != 0:
+                    if matrix[d - 1][c] == 1:
+                        surround -= 1
+                perimeter += surround
+            c += 1
+        d += 1
     return perimeter
