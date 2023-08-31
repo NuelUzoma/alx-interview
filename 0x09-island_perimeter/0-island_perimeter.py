@@ -1,8 +1,10 @@
 #!/usr/bin/python3
-"""The island perimeter task"""
+"""a function def island_perimeter(grid):
+that returns the perimeter of the island described in grid"""
 
 
 def solve(matrix):
+    """The function of the program"""
     d = 0
     perimeter = 0
     height = len(matrix)
